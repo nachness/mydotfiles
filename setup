@@ -1,0 +1,55 @@
+#!/bin/bash
+# A script to prepare an Ubuntu 16.04 environment that I can use
+
+OUTFILE=/tmp/deploy.log
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENTDIR="$(dirname "$DIR")"
+
+echo -e "\n$(date)" >> $OUTFILE
+
+function run_cmd() {
+    CMD=$@
+    echo -e "${BLUE}Running '$CMD' command...:${NC}"
+    "$@" 2>&1 | tee -a $OUTFILE
+    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+        echo -e "${GREEN}[ SUCCESS ]${NC}"
+    else
+        echo -e "${RED}{ FAILED }${NC}"
+        exit 1
+    fi
+}
+
+
+run_cmd sudo apt-get update && sudo apt-get upgrade
+run_cmd sudo apt-get install -y vim \
+    python2.7 \
+    python2.7-dev \
+    python-pip \
+    vim \
+    wget \
+    curl \
+    git \
+    python-virtualenv \
+    zsh 
+
+echo 'Installing powerline fonts'
+run_cmd mkdir -p ~/.fonts
+
+run_cmd wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf -P $DIR/conf/
+run_cmd wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -P $DIR/conf/
+run_cmd mv $DIR/conf/PowerlineSymbols.otf ~/.fonts/
+run_cmd mkdir -p ~/.config/fontconfig/conf.d #if directory doesn't exists
+# Clear fonts
+run_cmd fc-cache -vf ~/.fonts/
+run_cmd mv $DIR/conf/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+
+# Install oh-my-zsh
+run_cmd bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+
+run_cmd mkdir -p ~/.ssh && cp conf/* ~/
