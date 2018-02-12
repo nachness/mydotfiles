@@ -30,12 +30,14 @@ run_cmd sudo apt-get install -y vim \
     python2.7 \
     python2.7-dev \
     python-pip \
-    vim \
     wget \
     curl \
     git \
     python-virtualenv \
-    zsh 
+    zsh \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common
 
 echo 'Installing powerline fonts'
 run_cmd mkdir -p ~/.fonts
@@ -44,12 +46,27 @@ run_cmd wget https://github.com/powerline/powerline/raw/develop/font/PowerlineSy
 run_cmd wget https://github.com/powerline/powerline/raw/develop/font/10-powerline-symbols.conf -P $DIR/conf/
 run_cmd mv $DIR/conf/PowerlineSymbols.otf ~/.fonts/
 run_cmd mkdir -p ~/.config/fontconfig/conf.d #if directory doesn't exists
+
 # Clear fonts
 run_cmd fc-cache -vf ~/.fonts/
 run_cmd mv $DIR/conf/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
 
+# Docker
+run_cmd curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+run_cmd sudo apt-key fingerprint 0EBFCD88
+run_cmd sudo add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+run_cmd sudo apt-get update
+run_cmd sudo apt-get install docker-ce
+
+# Docker-compose
+run_cmd sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+run_cmd sudo chmod +x /usr/local/bin/docker-compose
+run_cmd docker-compose --version
+run_cmd groupadd docker
+run_cmd usemod -aG docker $USER
 # Install oh-my-zsh
 run_cmd bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-
 run_cmd mkdir -p ~/.ssh && cp conf/* ~/
