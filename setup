@@ -70,3 +70,7 @@ run_cmd usemod -aG docker $USER
 # Install oh-my-zsh
 run_cmd bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 run_cmd mkdir -p ~/.ssh && cp conf/* ~/
+run_cmd vim +PluginInstall +qall
+pushd ~/.vim/bundle/YouCompleteMe
+run_cmd ./install.py
+popd
