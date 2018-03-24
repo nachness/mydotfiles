@@ -25,7 +25,7 @@ function run_cmd() {
 }
 
 
-run_cmd sudo apt-get update && sudo apt-get upgrade
+run_cmd sudo apt-get update 
 run_cmd sudo apt-get install -y vim \
     python2.7 \
     python2.7-dev \
@@ -37,7 +37,8 @@ run_cmd sudo apt-get install -y vim \
     zsh \
     apt-transport-https \
     ca-certificates \
-    software-properties-common
+    software-properties-common \
+    cmake
 
 echo 'Installing powerline fonts'
 run_cmd mkdir -p ~/.fonts
@@ -59,17 +60,16 @@ run_cmd sudo add-apt-repository \
     $(lsb_release -cs) \
     stable"
 run_cmd sudo apt-get update
-run_cmd sudo apt-get install docker-ce
+run_cmd sudo apt-get install -y docker-ce
 
 # Docker-compose
 run_cmd sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 run_cmd sudo chmod +x /usr/local/bin/docker-compose
+run_cmd sudo usermod -aG docker $USER
 run_cmd docker-compose --version
-run_cmd groupadd docker
-run_cmd usemod -aG docker $USER
 # Install oh-my-zsh
 run_cmd bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-run_cmd mkdir -p ~/.ssh && cp conf/* ~/
+run_cmd mkdir -p ~/.ssh && cp -R conf/* ~/
 run_cmd vim +PluginInstall +qall
 pushd ~/.vim/bundle/YouCompleteMe
 run_cmd ./install.py
