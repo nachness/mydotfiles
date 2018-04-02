@@ -69,8 +69,11 @@ run_cmd sudo usermod -aG docker $USER
 run_cmd docker-compose --version
 # Install oh-my-zsh
 run_cmd bash -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-run_cmd mkdir -p ~/.ssh && cp -R conf/* ~/
-run_cmd vim +PluginInstall +qall
+run_cmd mkdir -p ~/.ssh && cp -R $DIR/conf/{.,}* ~
+if [ ! -d ~/.vim/bundle/Vundle.vim/ ]; then
+    run_cmd git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+fi
+run_cmd vim -c 'PluginInstall' -c 'qa!'
 pushd ~/.vim/bundle/YouCompleteMe
 run_cmd ./install.py
 popd
