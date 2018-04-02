@@ -83,7 +83,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls='ls -l --hide="*.pyc"'
+alias ls='ls -l --color=auto --hide="*.pyc"'
 # alias vim=nvim
 TERM=xterm-256color;
 
