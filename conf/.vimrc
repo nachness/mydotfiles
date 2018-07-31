@@ -61,14 +61,41 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 " For python files, do the follwing
+"" \ set foldmethod=indent |
+" \ set foldnestmax=1 | 
+
 au BufNewFile,BufRead *.py
-    \ set foldmethod=indent |
-    \ set foldnestmax=2 | 
     \ set softtabstop=4 |
     \ set textwidth=79 |
     \ set expandtab | 
     \ set autoindent | 
     \ set fileformat=unix
+
+au BufNewFile,BufRead *.yml
+    \ set softtabstop=2 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set number
+
+au BufNewFile,BufRead *.yaml
+    \ set softtabstop=2 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set number
+
+au BufNewFile,BufRead *.conf
+    \ set softtabstop=2 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set nonumber
+
+
 
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
